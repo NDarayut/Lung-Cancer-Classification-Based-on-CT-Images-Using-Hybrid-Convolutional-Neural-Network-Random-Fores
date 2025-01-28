@@ -97,3 +97,5 @@ def predict():
                 os.remove(image_path)
             return render_template('index.html', prediction=f"Error: {str(e)}", image=None)
 
+if __name__ == "__main__":
+    app.run(port=5000, debug=True)
