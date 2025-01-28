@@ -53,7 +53,7 @@ Combining CNNs and Random Forests leverages the strengths of both models, creati
 6. Run program:  
 <code>python app.py</code>  
 7. Get address and paste in browser:  
-```http://127.0.0.1:3000```  
+```http://127.0.0.1:5000```  
 8. Deactivate environment:  
 <code>deactivate</code>  
 
