@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 from collections import Counter
 
 # Define the base directory where images are stored
-data_dir = "../test_images/"
+data_dir = "/workspaces/Lung-Cancer-Classification-Based-on-CT-Images-Using-Hybrid-Convolutional-Neural-Network-Random-Fores/test_images"
 
 # Define class labels
 classes = {'Bengin case', 'Malignant case', 'Normal case'}

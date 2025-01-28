@@ -1,10 +1,11 @@
-# For this to work, you must install: python==3.11
 from flask import Flask, render_template, request
-from tensorflow.keras.models import load_model 
+from tensorflow.keras.models import load_model
 from image_preprocess import preprocess
 import os
 import numpy as np
 import joblib
+import threading
+import time
 
 # Load model from folders
 feature_extractor = load_model(r"../final_model/custom_cnn_feature_extractor_finale.h5")
@@ -12,73 +13,90 @@ classification_model = joblib.load(r"../final_model/RF_model_finale.pkl")
 
 app = Flask(__name__, static_url_path='/static')
 
-@app.route('/', methods=['POST', 'GET'])
+def delete_files_after_delay(files, delay=10):
+    """
+    Delete files after a specified delay.
+    :param files: List of file paths to delete.
+    :param delay: Time in seconds to wait before deleting files.
+    """
+    time.sleep(delay)
+    for file in files:
+        if os.path.exists(file):
+            os.remove(file)
 
+@app.route('/', methods=['POST', 'GET'])
 def predict():
-    # If client visit page, return only the html file
+    # If client visit page, return only the HTML file
     if request.method == 'GET':
         return render_template('index.html')
-        
-    # If client submit an image, we perform preprocessing and classification
+
+    # If client submit an image, perform preprocessing and classification
     elif request.method == 'POST':
         imagefile = request.files['imagefile']
 
-        # Prevent use from submitting without actually input image
+        # Prevent submission without an image
         if imagefile.filename == '':
             return render_template('index.html', prediction='No file selected', image=None)
 
-        # Save images into image folders
-        image_path = os.path.join(app.root_path, 'static\images', imagefile.filename)
+        # Save the image temporarily
+        image_path = os.path.join(app.root_path, 'static/images', imagefile.filename)
         imagefile.save(image_path)
 
-        # preprocess image e.g np array and scaling
-        X = preprocess(image_path)
-        # declare encoder for each target
-        encode_label = {0:"Benign", 1:"Malignant", 2:"Normal"}
-        
-        # extract image feature
-        features = feature_extractor.predict(X)
-        # reshape it for Random Forest 
-        features = features.reshape(features.shape[0], -1)
+        try:
+            # Preprocess the image (e.g., convert to numpy array and scale)
+            X = preprocess(image_path)
+            encode_label = {0: "Benign", 1: "Malignant", 2: "Normal"}
 
-        # Prediction on Random Forest Classifier
-        Y_pred = classification_model.predict(features)
-        # Get all prediction accross the entire Forest and calculate confidence level
-        probability = np.max(classification_model.predict_proba(features), axis=1)*100
-        Y_pred_index = int(Y_pred[0])  # Extract the first element if Y_pred is an array
-        probability_value = float(probability[0])  # Extract the first element of the probabilities
-        classification = '%s (%.2f%%)' % (encode_label[Y_pred_index], probability_value)
-        
-        # Create a bar chart of probabilities
-        probabilities = classification_model.predict_proba(features)[0] * 100  # Assuming single image prediction
-        classes = list(encode_label.values())
-        
-        # Set backend to avoid GUI issues
-        import matplotlib
-        matplotlib.use('Agg')
-        import matplotlib.pyplot as plt
-        
-        # Create and save the plot
-        plt.figure(figsize=(12, 6))
-        bars = plt.bar(classes, probabilities, color=['blue', 'red', 'green'])
-        # Add percentage labels on top of the bars
-        for bar in bars:
-            yval = bar.get_height()
-            plt.text(bar.get_x() + bar.get_width()/2, yval + 2, f'{yval:.1f}%', ha='center', va='bottom')  # Adjust the y-position as needed
-        plt.ylim(0, max(probabilities) + 10)  # Add a little padding above the highest bar
-        plt.xlabel('Classes')
-        plt.ylabel('Confidence Level (%)')
-        plt.title('Confidence Level for Each Class')
-        
-        # Save the plot to the static/images folder
-        chart_path = os.path.join(app.root_path, 'static', 'images', f'chart.png')
-        plt.savefig(chart_path)
-        plt.close()  # Close the plot to free memory
+            # Extract features
+            features = feature_extractor.predict(X)
+            features = features.reshape(features.shape[0], -1)
 
-        # Pass the result, the submitted image and the chart image to HTML
-        return render_template('index.html', prediction=classification, image=imagefile.filename, chart=f'images/chart.png')
+            # Predict using Random Forest Classifier
+            Y_pred = classification_model.predict(features)
+            probability = np.max(classification_model.predict_proba(features), axis=1) * 100
+            Y_pred_index = int(Y_pred[0])
+            probability_value = float(probability[0])
+            classification = '%s (%.2f%%)' % (encode_label[Y_pred_index], probability_value)
+
+            # Generate confidence bar chart
+            probabilities = classification_model.predict_proba(features)[0] * 100
+            classes = list(encode_label.values())
+
+            # Set backend to avoid GUI issues
+            import matplotlib
+            matplotlib.use('Agg')
+            import matplotlib.pyplot as plt
+
+            plt.figure(figsize=(12, 6))
+            bars = plt.bar(classes, probabilities, color=['blue', 'red', 'green'])
+            for bar in bars:
+                yval = bar.get_height()
+                plt.text(bar.get_x() + bar.get_width()/2, yval + 2, f'{yval:.1f}%', ha='center', va='bottom')
+            plt.ylim(0, max(probabilities) + 10)
+            plt.xlabel('Classes')
+            plt.ylabel('Confidence Level (%)')
+            plt.title('Confidence Level for Each Class')
+
+            # Save the plot temporarily
+            chart_path = os.path.join(app.root_path, 'static', 'images', 'chart.png')
+            plt.savefig(chart_path)
+            plt.close()
+
+            # Render the template with prediction and chart
+            response = render_template('index.html', prediction=classification, image=imagefile.filename, chart=f'images/chart.png')
+
+            # Schedule file deletion after 10 seconds
+            files_to_delete = [image_path, chart_path]
+            threading.Thread(target=delete_files_after_delay, args=(files_to_delete, 10)).start()
+
+            return response
+
+        except Exception as e:
+            # Cleanup immediately in case of an error
+            if os.path.exists(image_path):
+                os.remove(image_path)
+            return render_template('index.html', prediction=f"Error: {str(e)}", image=None)
 
 if __name__ == '__main__':
     # Runs on port 3000
-    app.run(port=3000, debug =True)
-
+    app.run(port=3000, debug=True)

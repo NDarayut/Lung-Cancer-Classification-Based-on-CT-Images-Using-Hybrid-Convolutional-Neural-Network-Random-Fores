@@ -1,0 +1,4 @@
+IF YOU ARE UNABLE TO INSTALL SCIKIT-LEARN PLEASE RUN BELOW CODE:
+
+$pip cache purge
+$pip install --no-binary scikit-learn --no-build-isolation --force-reinstall scikit-learn==1.2.2

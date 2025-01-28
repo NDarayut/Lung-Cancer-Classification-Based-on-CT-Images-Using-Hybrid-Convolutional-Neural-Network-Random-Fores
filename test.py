@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 import random
 
 # Load the model from the directory
-feature_extractor = load_model("/final_model/custom_cnn_feature_extractor_finale.h5")
-classification_model = joblib.load("/final_model/RF_model_finale.pkl")
+feature_extractor = load_model("./final_model/custom_cnn_feature_extractor_finale.h5")
+classification_model = joblib.load("./final_model/RF_model_finale.pkl")
 
 def accuracy(Y_pred, Y):
     """
@@ -48,13 +48,13 @@ def test_prediction(index, X, Y):
     
     encode_label = {0:"Benign", 1:"Malignant", 2:"Normal"}
 
-    print(f"Predicted label: {encode_label[int(predicted_label)]}")
+    print(f"Predicted label: {encode_label[int(predicted_label[0])]}")
     print(f"Actual label: {encode_label[int(label)]}")
     print(f"Confidence level: {probability}%")
   
     
     plt.imshow(current)
-    plt.title(encode_label[int(predicted_label)])
+    plt.title(encode_label[int(predicted_label.item())])
     plt.axis("off")
     plt.show()
 
@@ -67,5 +67,5 @@ print(classification_report(Y, Y_pred))
 
 # randomly select 5 images and make a prediction on it.
 for i in range(5): 
-    index = random.randint(1, 500)
+    index = random.randint(0, 9)
     test_prediction(index, X, Y)
