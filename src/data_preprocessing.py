@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 from collections import Counter
 
 # Define the base directory where images are stored
-data_dir = "path\\to\\folder"
+data_dir = "../test_images/"
 
 # Define class labels
 classes = {'Bengin case', 'Malignant case', 'Normal case'}
