@@ -98,5 +98,4 @@ def predict():
             return render_template('index.html', prediction=f"Error: {str(e)}", image=None)
 
 if __name__ == '__main__':
-    # Runs on port 3000
-    app.run(port=3000, debug=True)
+    app.run(debug=True)
