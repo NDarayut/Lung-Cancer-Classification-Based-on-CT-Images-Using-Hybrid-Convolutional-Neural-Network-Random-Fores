@@ -1,4 +1,4 @@
-from data_preprocessing import X, Y
+from src.data_preprocessing import X, Y
 from tensorflow.keras.models import load_model
 import numpy as np
 import joblib
@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 import random
 
 # Load the model from the directory
-feature_extractor = load_model("final_model\custom_cnn_feature_extractor_finale.h5")
-classification_model = joblib.load("final_model\RF_model_finale.pkl")
+feature_extractor = load_model("/final_model/custom_cnn_feature_extractor_finale.h5")
+classification_model = joblib.load("/final_model/RF_model_finale.pkl")
 
 def accuracy(Y_pred, Y):
     """
