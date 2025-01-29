@@ -8,4 +8,5 @@ scikit-learn==1.2.2
 matplotlib==3.9.2
 gunicorn
 gevent
+logging
 
