@@ -1,4 +1,4 @@
-from src.data_preprocessing import X, Y
+from scripts.data_preprocessing import X, Y
 from tensorflow.keras.models import load_model
 import numpy as np
 import joblib
