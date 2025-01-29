@@ -1,3 +1,4 @@
+Deployed at [Hugging Face Space](https://huggingface.co/spaces/Darayut/Lung-Cancer-Prediction)  
 Dataset can be found on [kaggle](https://www.kaggle.com/datasets/hamdallak/the-iqothnccd-lung-cancer-dataset)   
 Notebook: [Google Colab](https://drive.google.com/file/d/1qzl51JJZ19glgs6r2TXPL3mOHNOHfodG/view?usp=sharing)  
 Dataset that were used in this research: [Google drive](https://drive.google.com/drive/folders/1RxW7MIiroNeksh-AmE8uLSxF6UbX9mLl?usp=sharing)  
@@ -55,9 +56,8 @@ Combining CNNs and Random Forests leverages the strengths of both models, creati
 7. Get address and paste in browser:  
 ```http://127.0.0.1:5000```  
 8. Deactivate environment:  
-<code>deactivate</code>  
-<h2>Test our model here</h2>  
-[Hugging Face Space](https://huggingface.co/spaces/Darayut/Lung-Cancer-Prediction)
+<code>deactivate</code>
+
 <h2>Demo</h2>  
 
 ![Gif demo 3](https://github.com/user-attachments/assets/919769c6-7ae3-488a-9a29-109a0519d052)
