@@ -56,7 +56,8 @@ Combining CNNs and Random Forests leverages the strengths of both models, creati
 ```http://127.0.0.1:5000```  
 8. Deactivate environment:  
 <code>deactivate</code>  
-
+<h2>Test our model here</h2>  
+[Hugging Face Space](https://huggingface.co/spaces/Darayut/Lung-Cancer-Prediction)
 <h2>Demo</h2>  
 
 ![Gif demo 3](https://github.com/user-attachments/assets/919769c6-7ae3-488a-9a29-109a0519d052)
