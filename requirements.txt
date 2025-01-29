@@ -9,4 +9,5 @@ matplotlib==3.9.2
 gunicorn
 gevent
 logging
+psutil
 
