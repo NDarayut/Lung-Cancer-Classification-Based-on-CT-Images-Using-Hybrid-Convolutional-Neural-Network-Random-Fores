@@ -2,7 +2,9 @@ Deployed at [Hugging Face Space](https://huggingface.co/spaces/Darayut/Lung-Canc
 Dataset can be found on [kaggle](https://www.kaggle.com/datasets/hamdallak/the-iqothnccd-lung-cancer-dataset)   
 Notebook: [Google Colab](https://drive.google.com/file/d/1qzl51JJZ19glgs6r2TXPL3mOHNOHfodG/view?usp=sharing)  
 Dataset that were used in this research: [Google drive](https://drive.google.com/drive/folders/1RxW7MIiroNeksh-AmE8uLSxF6UbX9mLl?usp=sharing)  
-Note: Only works with python 3.11
+Note: Only works with python 3.11  
+Paper: [Lung Cancer Classification Based on CT Images Using Hybrid Convolutional Neural Network-Random Forest Model](https://hal.science/hal-04922518)
+
 
 <h2>Abstract </h2>   
 Lung cancer is a type of cancer that starts when abnormal cells grow in an uncontrolled way in the lungs. It is a serious health issue that can cause severe harm and death. Cancer that is caught at an early stage can be treated and could potentially saves lives. However, only 16% of lung cancer are diagnosed at an early stage, meaning more than 80% of lung cancer are diagnosed at a much later stage which could drastically reduce the survival rate of lung cancer patient. In this research, deep-learning and machine learning method is used to accurately identify the type of nodules within the lungs by using CT-images as input. CT-scan is one of the methods used to identify lung cancer, but radiologist struggle to identify the cancerous tumor residing in the lungs. With the help of technology and Artificial Intelligence, radiologist can use these tools to assist them in identifying the type of tumor and could further decreased the mortality rate of lung cancer. Through this research a dataset collected from the Iraqi hospitals was used on the hybrid convolutional neural network and random forest model (CNN-RF) to classify the type of nodule: benign, normal or malignant. The proposed model gives high accuracy ups to 94% on the testing set. The other performance metrices comes with high values such as 93% on recall average and 95% on precision average.   
